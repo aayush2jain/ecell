@@ -91,12 +91,13 @@ const loginUser = async (req, res, next) => {
         // Get user data without the password field
         const loggedInUser = await User.findById(existedUser._id).select("-password");
         console.log("Logged in user:", loggedInUser);
-
-        // Set cookie options
+        
+           // Set cookie options based on environment
+        const isProduction = process.env.NODE_ENV === 'production';
         const options = {
             httpOnly: true,
-            secure: true, 
-            // sameSite: 'None',  // Required for cross-origin cookies
+            secure: isProduction, // secure in production only
+            sameSite: isProduction ? 'None' : 'Lax', // Required for cross-origin cookies in production
             maxAge: 24 * 60 * 60 * 1000 // Set the cookie expiration (1 day)
         };
 
