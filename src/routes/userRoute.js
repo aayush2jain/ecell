@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { changePassword, getCurrentUser, getUserChannelProfile, getWatchHistory, loginUser, logoutUser, registeredUser } from "../controllers/registeruser.js";
-
 import { verifyJWT } from "../middlewares/auth.js";
 const router = Router();
 router.route('/register').post(registeredUser);
