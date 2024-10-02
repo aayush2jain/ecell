@@ -7,7 +7,7 @@ import bodyParser from "body-parser";
 const app=express();
 
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: 'https://ecellfrontend-5q7u.vercel.app/',
   credentials: true
 }));
 app.use(express.json());
