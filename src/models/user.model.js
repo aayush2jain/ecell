@@ -1,6 +1,32 @@
 import mongoose, {Schema} from "mongoose";
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+const taskSubmissionSchema = new mongoose.Schema({
+  taskId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Task',
+    required: true
+  },
+  title:{
+   type:String,
+  },
+  completed: {
+    type: Boolean,
+    default: false
+  },
+  pointsEarned: {
+    type: Number,
+    default: 0
+  },
+  submission:{
+    type: [String],
+  },
+  submissionDate: {
+    type: Date,
+    default: Date.now
+  }
+});
+
 const userSchema = new Schema(
     {
         username: {
@@ -32,8 +58,8 @@ const userSchema = new Schema(
         },
         refreshToken: {
             type: String
-        }
-
+        },
+        tasksCompleted: [taskSubmissionSchema]
     },
     {
         timestamps: true

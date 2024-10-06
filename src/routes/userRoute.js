@@ -1,7 +1,13 @@
 import { Router } from "express";
-import { changePassword, getCurrentUser, getUserChannelProfile, getWatchHistory, loginUser, logoutUser, registeredUser } from "../controllers/registeruser.js";
+import { alltask, changePassword, getCurrentUser,getSubmittedTasks,loginUser, logoutUser, registeredUser, submittask, task } from "../controllers/registeruser.js";
 import { verifyJWT } from "../middlewares/auth.js";
 const router = Router();
+router.route('/create-task').post(task);
+
+// Route to submit task completion for a user
+router.route('/usertask').get(verifyJWT,getSubmittedTasks);
+router.route('/submit-task/:taskId').post(verifyJWT,submittask);
+router.route('/get-task').get(alltask);
 router.route('/register').post(registeredUser);
 router.route('/').post(loginUser);
 router.route("/logout").post(verifyJWT,logoutUser);

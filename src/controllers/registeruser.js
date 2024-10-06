@@ -2,8 +2,7 @@ import { User } from '../models/user.model.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { Cookie } from 'express-session';
 import mongoose from 'mongoose';
-
-
+import Task from '../models/task.model.js';
 
 const generateAndAcessRefreshToken = async(userId)=>{
    try{
@@ -113,6 +112,115 @@ const loginUser = async (req, res, next) => {
         return res.status(500).json({ message: "Internal server error" });
     }
 };
+//////////////////////////////////////////
+/////////////////
+/////////////////////////
+///////////////////////////////
+////////////////////////////
+const task = async (req, res) => {
+    const { title, description, points } = req.body;
+
+    try {
+        // Validate request body
+        if (!title || !description || !points) {
+            return res.status(400).json({ message: 'All fields are required' });
+        }
+
+        // Create a new task
+        const newTask = new Task({
+            title,
+            description,
+            points
+        });
+
+        // Save task to the database
+        const savedTask = await newTask.save();
+
+        return res.status(201).json({ message: 'Task created successfully', task: savedTask });
+    } catch (error) {
+        console.error('Error creating task:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
+const getSubmittedTasks = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    // Find the user by their ID
+    const user = await User.findById(userId).populate('tasksCompleted.taskId');
+    
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Return the list of submitted tasks
+    const submittedTasks = user.tasksCompleted;
+
+    return res.status(200).json({ submittedTasks });
+  } catch (error) {
+    console.error('Error fetching submitted tasks:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+
+
+const alltask = async (req, res) => {
+  try {
+    // Fetch all tasks from the database
+    const tasks = await Task.find({});
+    
+    // Respond with the fetched tasks
+    return res.status(200).json(tasks);
+  } catch (error) {
+    console.error('Error fetching tasks:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+}
+const submittask = async (req, res) => {
+  const { taskId } = req.params;
+  const userId = req.user._id; // Correct way to access userId from req.user
+  const  {submission}  = req.body;
+  console.log("googlelink",submission);
+  try {
+    // Find the user
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Find the task
+    const task = await Task.findById(taskId);
+    if (!task) {
+      return res.status(404).json({ message: 'Task not found' });
+    }
+
+    // Check if the task was already submitted
+    const existingSubmission = user.tasksCompleted.find(sub => sub.taskId.toString() === taskId);
+    if (existingSubmission) {
+      return res.status(400).json({ message: 'Task already submitted' });
+    }
+
+    // Add task submission with points from the task
+    user.tasksCompleted.push({
+      taskId: task._id,          // Reference to the task
+      completed: true,
+      submission: submission,
+      title:task.title,
+      pointsEarned: task.points, // Use the points from the Task model
+      submissionDate: new Date() // Submission date
+    });
+
+    // Save the updated user document
+    await user.save();
+
+    return res.status(200).json({ message: 'Task submitted successfully', user });
+  } catch (error) {
+    console.error('Error submitting task:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};
 
 const logoutUser = async(req, res) => {
     await User.findByIdAndUpdate(
@@ -208,7 +316,6 @@ const changePassword = async(req,res)=>{
     }
 }
 
-
 const getCurrentUser = async(req, res) => {
     console.log(req.user)
     const user = req.user;
@@ -217,230 +324,7 @@ const getCurrentUser = async(req, res) => {
     .json(user)
 }
 
-const updateAccountDetails = async(req, res) => {
-    const {fullName, email} = req.body
-
-    if (!fullName || !email) {
-        throw Error(400, "All fields are required")
-    }
-
-    const user = await User.findByIdAndUpdate(
-        req.user?._id,
-        {
-            $set: {
-                fullName,
-                email: email
-            }
-        },
-        {new: true}
-        
-    ).select("-password")
-
-    return res
-    .status(200)
-    .json(new ApiResponse(200, user, "Account details updated successfully"))
-}
-
-const updateUserAvatar = async(req, res) => {
-    const avatarLocalPath = req.file?.path
-
-    if (!avatarLocalPath) {
-        throw Error(400, "Avatar file is missing")
-    }
-
-    //TODO: delete old image - assignment
-
-    const avatar = await uploadOnCloudinary(avatarLocalPath)
-
-    if (!avatar.url) {
-        throw Error(400, "Error while uploading on avatar")
-        
-    }
-
-    const user = await User.findByIdAndUpdate(
-        req.user?._id,
-        {
-            $set:{
-                avatar: avatar.url
-            }
-        },
-        {new: true}
-    ).select("-password")
-
-    return res
-    .status(200)
-    .json(
-        new ApiResponse(200, user, "Avatar image updated successfully")
-    )
-}
-
-const updateUserCoverImage = async(req, res) => {
-    const coverImageLocalPath = req.file?.path
-
-    if (!coverImageLocalPath) {
-        throw Error(400, "Cover image file is missing")
-    }
-
-    //TODO: delete old image - assignment
-
-
-    const coverImage = await uploadOnCloudinary(coverImageLocalPath)
-
-    if (!coverImage.url) {
-        throw Error(400, "Error while uploading on avatar")
-        
-    }
-
-    const user = await User.findByIdAndUpdate(
-        req.user?._id,
-        {
-            $set:{
-                coverImage: coverImage.url
-            }
-        },
-        {new: true}
-    ).select("-password")
-
-    return res
-    .status(200)
-    .json(
-        new ApiResponse(200, user, "Cover image updated successfully")
-    )
-}
-
-
-const getUserChannelProfile =async(req, res) => {
-    const _id = req.params
-   
-    if (!_id) {
-        console.log("id is missing")
-    }
-
-    const channel = await User.aggregate([
-        {
-           $match: {
-                    _id: new mongoose.Types.ObjectId(_id)
-                }
-        },
-        {
-            $lookup: {
-                from: "subscriptions",
-                localField: "_id",
-                foreignField: "Channel",
-                as: "subscribers"
-            }
-        },
-        {
-            $lookup: {
-                from: "subscriptions",
-                localField: "_id",
-                foreignField: "Subscriber",
-                as: "subscribedTo"
-            }
-        },
-        {
-            $addFields: {
-                subscribersCount: {
-                    $size: "$subscribers"
-                },
-                channelsSubscribedToCount: {
-                    $size: "$subscribedTo"
-                },
-                isSubscribed: {
-                    $cond: {
-                        if: {$in: [req.user._id, "$subscribers.Subscriber"]},
-                        then: true,
-                        else: false
-                    }
-                }
-            }
-        },
-        {
-            $project: {
-                fullName: 1,
-                username: 1,
-                subscribersCount: 1,
-                channelsSubscribedToCount: 1,
-                isSubscribed: 1,
-                avatar: 1,
-                coverImage: 1,
-                email: 1
-
-            }
-        }
-    ])
-    if (!channel?.length) {
-       console.log("channel nahu chal rha")
-    }
-    console.log("channel",channel)
-
-    return res
-    .status(200)
-    .json(
-        new ApiResponse(200, channel[0], "User channel fetched successfully")
-    )
-}
-
-const getWatchHistory = async (req, res) => {
-    try {
-        const userId = new mongoose.Types.ObjectId(req.user._id);
-
-        const user = await User.aggregate([
-            {
-                $match: { _id: userId }
-            },
-            {
-                $lookup: {
-                    from: "videos",
-                    localField: "watchHistory",
-                    foreignField: "_id",
-                    as: "watchHistory",
-                    pipeline: [
-                        {
-                            $lookup: {
-                                from: "users",
-                                localField: "owner",
-                                foreignField: "_id",
-                                as: "owner",
-                                pipeline: [
-                                    {
-                                        $project: {
-                                            fullName: 1,
-                                            username: 1,
-                                            avatar: 1
-                                        }
-                                    }
-                                ]
-                            }
-                        },
-                        {
-                            $addFields: {
-                                owner: { $arrayElemAt: ["$owner", 0] }
-                            }
-                        }
-                    ]
-                }
-            }
-        ]);
-
-        if (!user || user.length === 0) {
-            return res.status(404).json(new ApiResponse(404, null, "User not found"));
-        }
-
-        return res.status(200).json(
-            new ApiResponse(
-                200,
-                user[0].watchHistory,
-                "Watch history fetched successfully"
-            )
-        );
-    } catch (error) {
-        console.error("Error fetching watch history:", error);
-        return res.status(500).json(new ApiResponse(500, null, "An error occurred while fetching watch history"));
-    }
-};
-
 export { registeredUser,loginUser,logoutUser,refreshAccessToken ,
-    changePassword,updateAccountDetails,updateUserAvatar
-    ,updateUserCoverImage,getCurrentUser,getWatchHistory,getUserChannelProfile
+    changePassword,getCurrentUser,getSubmittedTasks,
+    task,alltask,submittask
 };
