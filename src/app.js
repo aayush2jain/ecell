@@ -7,7 +7,7 @@ import bodyParser from "body-parser";
 const app=express();
 
 app.use(cors({
-  origin: ['https://ecellfrontend-5q7u.vercel.app', 'http://localhost:3000','https://www.ecelldtu.in/'],
+  origin: ['https://ecellfrontend-5q7u.vercel.app', 'http://localhost:3000','https://www.ecelldtu.in','https://ecell-dtu-official-eta.vercel.app'],
   credentials: true
 }));
 
