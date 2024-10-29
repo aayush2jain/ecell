@@ -79,7 +79,7 @@ const loginUser = async (req, res, next) => {
 
         const isPasswordCorrect = await existedUser.isPasswordCorrect(password);
         if (!isPasswordCorrect) {
-            return res.status(299).json({ message: "Incorrect user or password" });
+            return res.status(404).json({ message: "Incorrect user or password" });
         }
 
         // Generate access and refresh tokens
