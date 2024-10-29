@@ -19,7 +19,7 @@ const taskSubmissionSchema = new mongoose.Schema({
     default: 0
   },
   submission:{
-    type: [String],
+    type: String,
   },
   submissionDate: {
     type: Date,
