@@ -39,10 +39,9 @@ const generateAndAcessRefreshToken = async(userId)=>{
         })
 
         if (existedUser) {
-            return res.status(409).json({ error: "User with email or username already exists" });
+            return res.status(409).json({ error: "Email already register please login" });
         }
 
-        
         const user = await User.create({
             username,
             email,
@@ -75,7 +74,7 @@ const loginUser = async (req, res, next) => {
         const existedUser = await User.findOne({ email });
         if (!existedUser) {
             console.log("User not found:", email);
-            return res.status(404).json({ message: "User not found" });
+            return res.status(404).json({ message: "User not found please register" });
         }
 
         const isPasswordCorrect = await existedUser.isPasswordCorrect(password);
