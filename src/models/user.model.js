@@ -46,6 +46,9 @@ const userSchema = new Schema(
             type: String,
             required: true
         },
+        resume:{
+            type:String
+        },
         collegeCity:{
             type:String
         },

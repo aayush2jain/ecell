@@ -23,7 +23,7 @@ const generateAndAcessRefreshToken = async(userId)=>{
 
 
     const registeredUser = async (req, res, next) => {
-    const { username, email,college,number,collegeCity,year, password } = req.body;
+    const { username, email,college,number,collegeCity,year,resume,password } = req.body;
 
     console.log("fullname:", username, "email:", email, "pass:", password);
 
@@ -47,6 +47,7 @@ const generateAndAcessRefreshToken = async(userId)=>{
             email,
             college,
             collegeCity,
+            resume,
             number,
             year,
             password,
