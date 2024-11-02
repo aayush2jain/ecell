@@ -49,6 +49,9 @@ const userSchema = new Schema(
         resume:{
             type:String
         },
+        suitability:{
+            type:String
+        },
         collegeCity:{
             type:String
         },
