@@ -12,7 +12,7 @@ const taskSchema = new mongoose.Schema({
         trim: true,
     },
     points: {
-        type: String,
+        type: Number,
         required: true
     },
 }, {

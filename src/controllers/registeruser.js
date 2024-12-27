@@ -180,14 +180,11 @@ const getSubmittedTasks = async (req, res) => {
 
     // Find the user by their ID
     const user = await User.findById(userId).populate('tasksCompleted.taskId');
-    
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-
     // Return the list of submitted tasks
     const submittedTasks = user.tasksCompleted;
-  
     return res.status(200).json({ submittedTasks });
   } catch (error) {
     console.error('Error fetching submitted tasks:', error);
