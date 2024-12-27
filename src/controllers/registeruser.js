@@ -150,6 +150,7 @@ const totalResponses = async (req, res) => {
 };
 
 const task = async (req, res) => {
+    
     const { title, description, points } = req.body;
 
     try {
@@ -157,17 +158,14 @@ const task = async (req, res) => {
         if (!title || !description || !points) {
             return res.status(400).json({ message: 'All fields are required' });
         }
-
         // Create a new task
         const newTask = new Task({
             title,
             description,
             points
         });
-
         // Save task to the database
         const savedTask = await newTask.save();
-
         return res.status(201).json({ message: 'Task created successfully', task: savedTask });
     } catch (error) {
         console.error('Error creating task:', error);
