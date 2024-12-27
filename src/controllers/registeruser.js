@@ -118,6 +118,37 @@ const loginUser = async (req, res, next) => {
 /////////////////////////
 ///////////////////////////////
 ////////////////////////////
+const totalResponses = async (req, res) => {
+    try {
+        // Fetch all users, excluding sensitive fields
+        const users = await User.find({}).select("-password -refreshToken");
+        
+        let count1task = 0;
+        let count2task = 0;
+        let count3task = 0;
+
+        // Loop through users and count tasks completed
+        users.forEach((user) => {
+            const tasksCompleted = user.tasksCompleted || [];
+            if (tasksCompleted.length > 0) {
+                count1task++;
+            }
+            if (tasksCompleted.length > 1) {
+                count2task++;
+            }
+            if (tasksCompleted.length > 2) {
+                count3task++;
+            }
+        });
+
+        // Return the counts as JSON
+        return res.status(200).json({ count1task, count2task, count3task });
+    } catch (error) {
+        console.error("Error fetching users:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+};
+
 const task = async (req, res) => {
     const { title, description, points } = req.body;
 
@@ -146,6 +177,7 @@ const task = async (req, res) => {
 
 const getSubmittedTasks = async (req, res) => {
   try {
+    let totalPoints =0;
     const userId = req.user._id;
 
     // Find the user by their ID
@@ -157,8 +189,11 @@ const getSubmittedTasks = async (req, res) => {
 
     // Return the list of submitted tasks
     const submittedTasks = user.tasksCompleted;
+    submittedTasks.forEach((task) => {
+        totalPoints+=task.pointsEarned
+    });
 
-    return res.status(200).json({ submittedTasks });
+    return res.status(200).json({ submittedTasks,totalPoints });
   } catch (error) {
     console.error('Error fetching submitted tasks:', error);
     return res.status(500).json({ message: 'Internal server error' });
@@ -327,5 +362,5 @@ const getCurrentUser = async(req, res) => {
 
 export { registeredUser,loginUser,logoutUser,refreshAccessToken ,
     changePassword,getCurrentUser,getSubmittedTasks,
-    task,alltask,submittask
+    task,alltask,submittask,totalResponses
 };
