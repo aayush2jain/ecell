@@ -191,7 +191,7 @@ const getSubmittedTasks = async (req, res) => {
         totalPoints+=task.pointsEarned
     });
 
-    return res.status(200).json({ submittedTasks,totalPoints });
+    return res.status(200).json({ submittedTasks });
   } catch (error) {
     console.error('Error fetching submitted tasks:', error);
     return res.status(500).json({ message: 'Internal server error' });
