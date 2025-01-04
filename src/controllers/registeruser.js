@@ -68,6 +68,26 @@ const generateAndAcessRefreshToken = async(userId)=>{
         next(error);
     }
 };
+ const Leaderboard = async(req,res)=>{
+    try {
+        const leaderboard = await User.aggregate([
+           {
+                $project: {
+                    username: 1,
+                    collegeCity:1,
+                    totalScore: { $sum: '$tasksCompleted.pointsEarned' },
+                },
+            },
+            { $sort: { totalScore: -1 } }, // Sort by score in descending order
+            { $limit: 10 }, // Optional: Limit to top 10 users
+        ]);
+
+        res.status(200).json(leaderboard);
+    } catch (error) {
+        console.error('Error fetching leaderboard:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+ }
 const loginUser = async (req, res, next) => {
     const {email,password } = req.body;
     console.log( "email:",email, "pass", password);
@@ -275,53 +295,53 @@ const logoutUser = async(req, res) => {
     .json(new ApiResponse(200, {}, "User logged Out"))
 }
 
-const refreshAccessToken = async (req, res) => {
-    const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken
+// const refreshAccessToken = async (req, res) => {
+//     const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken
 
-    if (!incomingRefreshToken) {
-        throw Error(401, "unauthorized request")
-    }
+//     if (!incomingRefreshToken) {
+//         throw Error(401, "unauthorized request")
+//     }
 
-    try {
-        const decodedToken = jwt.verify(
-            incomingRefreshToken,
-            process.env.REFRESH_TOKEN_SECRET
-        )
+//     try {
+//         const decodedToken = jwt.verify(
+//             incomingRefreshToken,
+//             process.env.REFRESH_TOKEN_SECRET
+//         )
     
-        const user = await User.findById(decodedToken?._id)
+//         const user = await User.findById(decodedToken?._id)
     
-        if (!user) {
-            throw Error(401, "Invalid refresh token")
-        }
+//         if (!user) {
+//             throw Error(401, "Invalid refresh token")
+//         }
     
-        if (incomingRefreshToken !== user?.refreshToken) {
-            throw Error(401, "Refresh token is expired or used")
+//         if (incomingRefreshToken !== user?.refreshToken) {
+//             throw Error(401, "Refresh token is expired or used")
             
-        }
+//         }
     
-        const options = {
-            httpOnly: true,
-            secure: true
-        }
+//         const options = {
+//             httpOnly: true,
+//             secure: true
+//         }
     
-        const {accessToken, newRefreshToken} = await generateAccessAndRefereshTokens(user._id)
+//         const {accessToken, newRefreshToken} = await generateAccessAndRefereshTokens(user._id)
     
-        return res
-        .status(200)
-        .cookie("accessToken", accessToken, options)
-        .cookie("refreshToken", newRefreshToken, options)
-        .json(
-            new ApiResponse(
-                200, 
-                {accessToken, refreshToken: newRefreshToken},
-                "Access token refreshed"
-            )
-        )
-    } catch (error) {
-        throw Error(401, error?.message || "Invalid refresh token")
-    }
+//         return res
+//         .status(200)
+//         .cookie("accessToken", accessToken, options)
+//         .cookie("refreshToken", newRefreshToken, options)
+//         .json(
+//             new ApiResponse(
+//                 200, 
+//                 {accessToken, refreshToken: newRefreshToken},
+//                 "Access token refreshed"
+//             )
+//         )
+//     } catch (error) {
+//         throw Error(401, error?.message || "Invalid refresh token")
+//     }
 
-}
+// }
 
 const changePassword = async(req,res)=>{
     const user = await User.findById(req.user._id);
@@ -352,7 +372,8 @@ const getCurrentUser = async(req, res) => {
     .json(user)
 }
 
-export { registeredUser,loginUser,logoutUser,refreshAccessToken ,
+export { registeredUser,loginUser,logoutUser,
     changePassword,getCurrentUser,getSubmittedTasks,
     task,alltask,submittask,totalResponses
+    ,Leaderboard
 };

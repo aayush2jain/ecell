@@ -4,9 +4,9 @@ import { User } from "../models/user.model.js";
 
 export const verifyJWT = async (req,_, next) => {
     try {
-        console.log("verify jwt",req);
+        // console.log("verify jwt",req);
         const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "");
-
+        
         if (!token) {
             console.log("401 Unauthorized request - No token provided");  
         }
