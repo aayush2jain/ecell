@@ -79,7 +79,7 @@ const generateAndAcessRefreshToken = async(userId)=>{
                 },
             },
             { $sort: { totalScore: -1 } }, // Sort by score in descending order
-            { $limit: 10 }, // Optional: Limit to top 10 users
+            { $limit: 50 }, // Optional: Limit to top 10 users
         ]);
 
         res.status(200).json(leaderboard);
