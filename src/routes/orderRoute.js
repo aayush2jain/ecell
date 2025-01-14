@@ -10,7 +10,7 @@ router.post("/",async (req,res)=>{
       key_secret: process.env.MERCHANTSECRET,
     });
     const options = req.body;
-    console.log("important",options);
+    console.log("imp",options);
     const order = await razorpay.orders.create(options);
     if (!order) {
       return res.status(500).send("Error");
