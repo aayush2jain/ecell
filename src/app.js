@@ -18,7 +18,9 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 
 import userrouter from './routes/userRoute.js'
+import orderRouter from './routes/orderRoute.js'
 app.use('/user',userrouter);
+app.use('/payment',orderRouter);
 app.get('/',async (req,res)=>{
     res.status(200).json({message:"server is running"})
 })
