@@ -5,10 +5,13 @@ const router = Router();
 
 // Create a Nodemailer transporter
 const transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 465, // or 587 for TLS
+  secure: true, // true for port 465, false for port 587
   service: 'gmail', // Use Gmail as the service (or your preferred email provider)
   auth: {
     user: 'aayushjain1290@gmail.com', // Your email address
-    pass: '9414713068', 
+    pass: 'jpdzvxmwrnfcymfx', 
   },
 });
 
