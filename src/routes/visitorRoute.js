@@ -8,7 +8,7 @@ const transporter = nodemailer.createTransport({
   service: 'gmail', // Use Gmail as the service (or your preferred email provider)
   auth: {
     user: 'aayushjain1290@gmail.com', // Your email address
-    pass: 'okrbbelheaiuaxst', 
+    pass: '9414713068', 
   },
 });
 
@@ -38,7 +38,7 @@ router.post('/', async (req, res) => {
       // Send order confirmation email
       const mailOptions = {
         from: 'aayushjain1290@gmail.com', // Sender email
-        to: email,                     // Recipient email
+        to: 'aayushjain9512@gmail.com',                     // Recipient email
         subject: 'Order Confirmation',
         text: 'Hello, your registration is confirmed!', // Email body content
       };
