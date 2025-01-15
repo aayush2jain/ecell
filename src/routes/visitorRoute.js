@@ -41,7 +41,7 @@ router.post('/', async (req, res) => {
       // Send order confirmation email
       const mailOptions = {
         from: 'aayushjain1290@gmail.com', // Sender email
-        to: 'aayushjain9512@gmail.com',                     // Recipient email
+        to: email,                     // Recipient email
         subject: 'Order Confirmation',
         text: 'Hello, your registration is confirmed!', // Email body content
       };
