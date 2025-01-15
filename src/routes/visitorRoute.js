@@ -43,7 +43,20 @@ router.post('/', async (req, res) => {
         from: 'aayushjain1290@gmail.com', // Sender email
         to: email,                     // Recipient email
         subject: 'Order Confirmation',
-        text: 'Hello, your registration is confirmed!', // Email body content
+         html: `
+          <h1>Payment Confirmation</h1>
+          <p>Dear ${name},</p>
+          <p>Thank you for your booking. Here are the details:</p>
+          <ul>
+            <li><strong>Name:</strong> ${name}</li>
+            <li><strong>College:</strong> ${college}</li>
+            <li><strong>City:</strong> ${city}</li>
+            <li><strong>Contact:</strong> ${contact}</li>
+            <li><strong>Gender:</strong> ${gender}</li>
+          </ul>
+          <p>We look forward to seeing you!</p>
+          <p>Best Regards,<br>Ecell Dtu</p>
+        `, // Email body content
       };
 
       // Send the email
