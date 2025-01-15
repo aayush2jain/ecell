@@ -4,12 +4,12 @@ const router = Router();
 router.post('/',async (req,res)=>{
   const { name,college,city,email,contact,gender } = req.body;
   try{
-     const registeredUser = Visitor.findOne({email:email})
-     if(registeredUser){
-        return res.send("You have already applied")
-     }
+    //  const registeredUser = await Visitor.findOne({email:email})
+    //  if(registeredUser){
+    //     return res.send("You have already applied")
+    //  }
 
-     const visitor = new Visitor({
+    const visitor = new Visitor({
     name,
     college,
     city,
