@@ -24,6 +24,6 @@ app.use('/user',userrouter);
 app.use('/payment',orderRouter);
 app.use('/visitor',visitorRouter);
 app.get('/',async (req,res)=>{
-    res.status(200).json({message:"server is running"})
+    res.status(200).json({message:"server  running on "})
 })
 export {app}
