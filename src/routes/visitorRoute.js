@@ -42,19 +42,26 @@ router.post('/', async (req, res) => {
       const mailOptions = {
         from: 'aayushjain1290@gmail.com', // Sender email
         to: email,                     // Recipient email
-        subject: 'Order Confirmation',
+        subject: 'Successful Payment and Accommodation Confirmation',
          html: `
-          <h1>Payment Confirmation</h1>
           <p>Dear ${name},</p>
-          <p>Thank you for your booking. Here are the details:</p>
+          <p>We are delighted to confirm that your payment for accommodation has been successfully processed. Please find the details of your booking below:
+</p>
           <ul>
             <li><strong>Name:</strong> ${name}</li>
             <li><strong>College:</strong> ${college}</li>
             <li><strong>City:</strong> ${city}</li>
             <li><strong>Contact:</strong> ${contact}</li>
             <li><strong>Gender:</strong> ${gender}</li>
+            <li><strong>Accommodation Dates:</strong> 31st January to 2nd February 2025
+ </li>
+            <li><strong>Venue:</strong> Delhi Technological University
+Shahbad Daulatpur, Rohini,
+New Delhi - 110042
+ </li>
           </ul>
-          <p>We look forward to seeing you!</p>
+          <p>We look forward to hosting you at DTU and ensuring a seamless experience during your stay. Should you have any questions or require assistance, please do not hesitate to reach out.
+</p>
           <p>Best Regards,<br>Ecell Dtu</p>
         `, // Email body content
       };
