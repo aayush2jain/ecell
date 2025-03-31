@@ -6,14 +6,17 @@ import Startup from "../models/startup.model.js";
 dotenv.config();
 const router = Router();
 
-// Configure Nodemailer transporter
+// Create a Nodemailer transporter
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 587, // Use 587 instead of 465
+  secure: false, // `true` for port 465, `false` for 587
   auth: {
-    user: process.env.EMAIL_USER, // Use environment variables
+    user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
 });
+
 
 router.post("/", async (req, res) => {
   const { name, college, city, email, contact, gender, team } = req.body;
@@ -65,6 +68,7 @@ router.post("/", async (req, res) => {
 
         // Send email
         await transporter.sendMail(mailOptions);
+        console.log("Email sent successfully to:", email);
       } catch (emailError) {
         console.error("Email sending failed:", emailError);
         return res.status(500).json({ message: "Registration successful, but confirmation email could not be sent." });
