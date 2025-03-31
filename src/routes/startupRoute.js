@@ -23,7 +23,7 @@ router.post("/", async (req, res) => {
   console.log(req.body);
   // Validate input fields
   if (!name || !college || !city || !email || !contact || !gender || !team) {
-    return res.status(400).json({ message: "All fields are required" });
+    return res.status(400).json({ message: "All fields are required" })
   }
 
   try {
@@ -75,7 +75,7 @@ If you have any questions, feel free to reach out.
 
 See you soon!
 .</p>
-            <p>Best Regards,<br>aayush jain<br>cohead<br>E-Cell DTU</p>
+            <p>Best Regards,<br>E-Cell DTU</p>
           `,
         };
 
