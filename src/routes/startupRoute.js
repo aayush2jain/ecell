@@ -51,8 +51,8 @@ router.post("/", async (req, res) => {
           html: `
             <p>Dear ${name},</p>
             <p>
-Congratulations! Your payment for Techstars Startup Weekend 2025 by E-Cell DTU, powered by Google for Startups, has been successfully received. We’re thrilled to have you join us for this incredible 3-day experience on April 4, 5, and 6, 2025 at DTU.
-from team ${team}.</p>
+Congratulations! Your payment for Techstars Startup Weekend 2025 by E-Cell DTU, powered by Google for Startups, has been successfully received. We’re thrilled to have you and your team ${team} join us for this incredible 3-day experience on April 4, 5, and 6, 2025 at DTU.
+.</p>
  <p> Here are a few important reminders to ensure a smooth experience:
 </p>
           <ul>
