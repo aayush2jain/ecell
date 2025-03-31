@@ -1,8 +1,13 @@
 import mongoose from "mongoose";
-const visitorSchema = new mongoose.Schema({
+const startupSchema = new mongoose.Schema({
   name: {
     type: String,
     trim: true,
+  },
+  team: {
+    type: String,
+    trim: true,
+    unique:true,
   },
   college: {
     type: String,
@@ -14,11 +19,6 @@ const visitorSchema = new mongoose.Schema({
   },
   gender: {
     type: String,
-  },
-  team:{
-    type:String,
-    trim:true,
-    lowercase:true
   },
   contact: {
     type: String,
@@ -43,5 +43,5 @@ const visitorSchema = new mongoose.Schema({
   },
 }, { timestamps: true });
 
-  const Visitor = mongoose.model('Visitor', visitorSchema);
-  export default Visitor
+  const Startup = mongoose.model('Startup', startupSchema);
+  export default Startup

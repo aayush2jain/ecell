@@ -7,7 +7,7 @@ import bodyParser from "body-parser";
 const app=express();
 
 app.use(cors({
-  origin: ['https://ecellfrontend-5q7u.vercel.app','https://esummit.ecelldtu.in', 'http://localhost:3000','https://www.ecelldtu.in','https://ecell-dtu-official-eta.vercel.app'],
+  origin: ['https://ecellfrontend-5q7u.vercel.app','https://esummitfinal.vercel.app/','https://esummit.ecelldtu.in', 'http://localhost:3000','https://www.ecelldtu.in','https://ecell-dtu-official-eta.vercel.app'],
   credentials: true
 }));
 
@@ -20,9 +20,11 @@ app.use(bodyParser.json());
 import userrouter from './routes/userRoute.js'
 import orderRouter from './routes/orderRoute.js'
 import visitorRouter from './routes/visitorRoute.js'
+import startupRouter from './routes/startupRoute.js'
 app.use('/user',userrouter);
 app.use('/payment',orderRouter);
 app.use('/visitor',visitorRouter);
+app.use('/startup',startupRouter);
 app.get('/',async (req,res)=>{
     res.status(200).json({message:"server is running on "})
 })

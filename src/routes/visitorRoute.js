@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
 });
 
 router.post('/', async (req, res) => {
-  const { name, college, city, email, contact, gender } = req.body;
+  const { name, college, city, email, contact, gender,team } = req.body;
 
   // Validate input fields
   if (!name || !college || !city || !email || !contact || !gender) {
@@ -32,6 +32,7 @@ router.post('/', async (req, res) => {
       email,
       contact,
       gender,
+      team,
     });
 
     // Save the visitor to the database
