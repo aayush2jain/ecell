@@ -50,18 +50,32 @@ router.post("/", async (req, res) => {
           subject: "Successful Payment and Accommodation Confirmation",
           html: `
             <p>Dear ${name},</p>
-            <p>We are delighted to confirm that your payment for registration has been successfully processed. Here are your details:</p>
-            <ul>
-              <li><strong>Name:</strong> ${name}</li>
-              <li><strong>College:</strong> ${college}</li>
-              <li><strong>City:</strong> ${city}</li>
-              <li><strong>Contact:</strong> ${contact}</li>
-              <li><strong>Gender:</strong> ${gender}</li>
-              <li><strong>Team:</strong> ${team}</li>
-              <li><strong>Venue:</strong> Delhi Technological University, Rohini, New Delhi</li>
-            </ul>
-            <p>We look forward to hosting you at DTU. If you have any questions, feel free to contact us.</p>
-            <p>Best Regards,<br>E-Cell DTU</p>
+            <p>
+Congratulations! Your payment for Techstars Startup Weekend 2025 by E-Cell DTU, powered by Google for Startups, has been successfully received. We’re thrilled to have you join us for this incredible 3-day experience on April 4, 5, and 6, 2025 at DTU.
+from team ${team}.</p>
+ <p> Here are a few important reminders to ensure a smooth experience:
+</p>
+          <ul>
+            <li><strong>Carry your ID for verification at the entrance.
+</strong></li>
+            <li><strong>Maintain a respectful atmosphere on campus.
+</strong></li>
+            <li><strong>Bring an extension cord for power and a water bottle for refills.
+</strong></li>
+            <li><strong>Follow curfew guidelines to avoid any inconvenience.
+</strong> </li>
+            <li><strong>We’ll share reporting location details before the event.
+</strong></li>
+            <li><strong>Strictly avoid bringing liquor, e-cigarettes, vapes, tobacco, or any other prohibited substances.
+</strong>
+ </li>
+            <p>We can’t wait to see the amazing ideas you’ll bring to life. Get ready for an exciting weekend of innovation, networking, and collaboration!
+
+If you have any questions, feel free to reach out.
+
+See you soon!
+.</p>
+            <p>Best Regards,<br>aayush jain<br>cohead<br>E-Cell DTU</p>
           `,
         };
 

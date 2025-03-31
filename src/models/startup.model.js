@@ -6,8 +6,7 @@ const startupSchema = new mongoose.Schema({
   },
   team: {
     type: String,
-    trim: true,
-    unique:true,
+    trim: true
   },
   college: {
     type: String,
