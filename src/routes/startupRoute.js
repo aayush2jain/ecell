@@ -58,7 +58,6 @@ router.post("/", async (req, res) => {
               <li><strong>Contact:</strong> ${contact}</li>
               <li><strong>Gender:</strong> ${gender}</li>
               <li><strong>Team:</strong> ${team}</li>
-              <li><strong>Accommodation Dates:</strong> 31st January to 2nd February 2025</li>
               <li><strong>Venue:</strong> Delhi Technological University, Rohini, New Delhi</li>
             </ul>
             <p>We look forward to hosting you at DTU. If you have any questions, feel free to contact us.</p>
