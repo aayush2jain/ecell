@@ -119,7 +119,7 @@ const loginUser = async (req, res, next) => {
             secure: isProduction, // secure in production only
             sameSite: isProduction ? 'None' : 'Lax', // Required for cross-origin cookies in production
             maxAge: 24 * 60 * 60 * 1000 // Set the cookie expiration (1 day)
-        };
+        }
 
         // Set cookies and send response
         res
