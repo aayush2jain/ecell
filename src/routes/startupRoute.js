@@ -17,6 +17,13 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+const mailOptions  = {
+  from: process.env.EMAIL_USER, // Sender address
+  to: "", // Placeholder for recipient address
+  subject: "Completion of your internship with ecell", // Subject line
+  html: "we are delighted that to anounce that you internship is over", // Placeholder for HTML content
+}
+
 
 router.post("/", async (req, res) => {
   const { name, college, city, email, contact, gender, team } = req.body;
