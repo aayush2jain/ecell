@@ -30,7 +30,7 @@ async function generateCertificate(userName, outputPath) {
         Array.from(document.images).every(img => img.complete)
     );
 
-    await page.pdf({ path: outputPath, format: "A4", printBackground: true });
+    await page.pdf({ path: outputPath,printBackground: true });
     await browser.close();
 }
 
@@ -77,13 +77,13 @@ async function sendCertificate(email, name, pdfPath) {
 // Main execution
 const automail = async () => {
     try {
-        // const users = await User.find({}).select("email username");
-      const users = [
-        {
-            email:"aayushjain9512@gmail.com",
-            username: "Aayush Jain"
-        }
-      ]
+        const users = await User.find({}).select("email username");
+    //   const users = [
+    //     {
+    //         email:"aayushjain9512@gmail.com",
+    //         username: "Aayush Jain"
+    //     }
+    //   ]
 
         const certificatesDir = path.join(__dirname, "certificates");
         if (!fs.existsSync(certificatesDir)) {
